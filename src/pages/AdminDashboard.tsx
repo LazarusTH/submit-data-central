@@ -11,21 +11,40 @@ import { SubmissionFilters } from '@/components/admin/SubmissionFilters';
 import { useAuth } from '@/context/AuthContext';
 import { FormSubmission } from '@/types/forms';
 import { getSubmissions, exportAsCsv } from '@/utils/formSubmission';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const AdminDashboard = () => {
-  const [submissions, setSubmissions] = useState<FormSubmission[]>([]);
   const [activeTab, setActiveTab] = useState('abetuta');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
+
+  const { data: submissions = [], isLoading, error, refetch } = useQuery({
+    queryKey: ['submissions'],
+    queryFn: async () => {
+      return await getSubmissions();
+    }
+  });
 
   useEffect(() => {
-    // Load submissions from storage
-    const allSubmissions = getSubmissions();
-    setSubmissions(allSubmissions);
-  }, []);
+    if (error) {
+      toast.error('Failed to fetch submissions. Using local data instead.');
+      console.error('Error fetching submissions:', error);
+    }
+  }, [error]);
 
   if (!isAuthenticated) {
     return <Navigate to="/admin" replace />;
+  }
+
+  if (isAuthenticated && !isAdmin) {
+    return (
+      <div className="container mx-auto p-8 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+        <p>Your account does not have administrator privileges.</p>
+        <Button onClick={logout} className="mt-4">Logout</Button>
+      </div>
+    );
   }
 
   const getFilteredSubmissions = (formType: string) => {
@@ -43,10 +62,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const refreshSubmissions = () => {
-    setSubmissions(getSubmissions());
-  };
-
   const countSubmissionsByType = (formType: string) => {
     return submissions.filter(sub => sub.formType === formType).length;
   };
@@ -54,6 +69,18 @@ const AdminDashboard = () => {
   const countSubmissionsByStatus = (formType: string, status: string) => {
     return submissions.filter(sub => sub.formType === formType && sub.status === status).length;
   };
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="container py-8">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-xl">Loading submissions...</p>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout>
@@ -168,7 +195,7 @@ const AdminDashboard = () => {
             <SubmissionsTable 
               submissions={getFilteredSubmissions('abetuta')} 
               formType="abetuta"
-              onUpdate={refreshSubmissions}
+              onUpdate={() => refetch()}
             />
           </TabsContent>
           
@@ -176,7 +203,7 @@ const AdminDashboard = () => {
             <SubmissionsTable 
               submissions={getFilteredSubmissions('qreta')} 
               formType="qreta"
-              onUpdate={refreshSubmissions}
+              onUpdate={() => refetch()}
             />
           </TabsContent>
           
@@ -184,7 +211,7 @@ const AdminDashboard = () => {
             <SubmissionsTable 
               submissions={getFilteredSubmissions('abalatMzgeba')} 
               formType="abalatMzgeba"
-              onUpdate={refreshSubmissions}
+              onUpdate={() => refetch()}
             />
           </TabsContent>
           
@@ -192,7 +219,7 @@ const AdminDashboard = () => {
             <SubmissionsTable 
               submissions={getFilteredSubmissions('report')} 
               formType="report"
-              onUpdate={refreshSubmissions}
+              onUpdate={() => refetch()}
             />
           </TabsContent>
         </Tabs>

@@ -11,10 +11,18 @@ import QretaForm from "./pages/QretaForm";
 import AbalatMzgebaForm from "./pages/AbalatMzgebaForm";
 import ReportForm from "./pages/ReportForm";
 import Admin from "./pages/Admin";
+import AdminRegister from "./pages/AdminRegister";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -30,6 +38,7 @@ const App = () => (
             <Route path="/abalat-mzgeba-form" element={<AbalatMzgebaForm />} />
             <Route path="/report-form" element={<ReportForm />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -8,33 +8,54 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import { Lock, AlertCircle } from 'lucide-react';
+import { UserPlus, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
 
-const AdminLogin = () => {
+const AdminRegister = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    
+    if (password !== confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
-      const success = await login(email, password);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
       
-      if (success) {
-        toast({
-          title: 'Login successful',
-          description: 'Redirecting to dashboard...',
-        });
+      if (error) {
+        setError(error.message);
+        return;
       }
-    } catch (error) {
-      console.error('Login error:', error);
+      
+      toast({
+        title: 'Registration successful',
+        description: 'Your account has been created. You can now log in.',
+      });
+      
+      // Redirect to login page after successful registration
+      setTimeout(() => {
+        window.location.href = '/admin';
+      }, 2000);
+      
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -52,12 +73,12 @@ const AdminLogin = () => {
             <CardHeader className="space-y-1 text-center">
               <div className="flex justify-center mb-2">
                 <div className="rounded-full bg-dataBlue/10 p-3">
-                  <Lock className="h-6 w-6 text-dataBlue" />
+                  <UserPlus className="h-6 w-6 text-dataBlue" />
                 </div>
               </div>
-              <CardTitle className="text-2xl">Admin Login</CardTitle>
+              <CardTitle className="text-2xl">Create Admin Account</CardTitle>
               <CardDescription>
-                Enter your credentials to access the admin dashboard
+                Register a new administrator account
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -78,15 +99,29 @@ const AdminLogin = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
+                  <p className="text-xs text-muted-foreground">
+                    Use admin@datacentralapp.com to get admin privileges automatically
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Create a strong password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -95,10 +130,10 @@ const AdminLogin = () => {
                   className="w-full bg-dataBlue hover:bg-dataBlue-dark"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
+                  {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground mt-2">
-                  <p>Create an account with <Link to="/admin/register" className="text-dataBlue hover:underline">admin@datacentralapp.com</Link> for admin access</p>
+                  <p>Already have an account? <Link to="/admin" className="text-dataBlue hover:underline">Sign in</Link></p>
                 </div>
               </form>
             </CardContent>
@@ -109,4 +144,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default AdminRegister;
