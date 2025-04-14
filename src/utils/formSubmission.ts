@@ -43,10 +43,10 @@ export async function submitForm(formType: FormSubmission['formType'], data: any
     // Transform the Supabase response into our FormSubmission type
     return {
       id: insertedData.id,
-      formType: insertedData.form_type,
-      status: insertedData.status,
+      formType: insertedData.form_type as FormSubmission['formType'],
+      status: insertedData.status as FormSubmission['status'],
       submittedAt: new Date(insertedData.submitted_at),
-      data: insertedData.data
+      data: insertedData.data as Record<string, any>
     };
   } catch (error) {
     console.error('Error in submitForm:', error);
@@ -86,10 +86,10 @@ export async function getSubmissions(): Promise<FormSubmission[]> {
     // Transform the Supabase data into our FormSubmission type
     return data.map((item: any) => ({
       id: item.id,
-      formType: item.form_type,
-      status: item.status,
+      formType: item.form_type as FormSubmission['formType'],
+      status: item.status as FormSubmission['status'],
       submittedAt: new Date(item.submitted_at),
-      data: item.data
+      data: item.data as Record<string, any>
     }));
   } catch (error) {
     console.error('Error in getSubmissions:', error);
