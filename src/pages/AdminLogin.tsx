@@ -29,8 +29,8 @@ const AdminLogin = () => {
       
       if (success) {
         toast({
-          title: 'Login successful',
-          description: 'Redirecting to dashboard...',
+          title: 'ግብረመልስ',
+          description: 'መግቢያው ተሳክቷል፣ ወደ ዳሽቦርድ በመሄድ ላይ...',
         });
       }
     } catch (error) {
@@ -55,9 +55,9 @@ const AdminLogin = () => {
                   <Lock className="h-6 w-6 text-dataBlue" />
                 </div>
               </div>
-              <CardTitle className="text-2xl">Admin Login</CardTitle>
+              <CardTitle className="text-2xl">የአስተዳዳሪ መግቢያ</CardTitle>
               <CardDescription>
-                Enter admin credentials to access the dashboard
+                ወደ አስተዳዳሪ ዳሽቦርድ ለመግባት መረጃዎን ያስገቡ
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -69,7 +69,7 @@ const AdminLogin = () => {
               )}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">ኢሜል</Label>
                   <Input
                     id="email"
                     type="email"
@@ -80,11 +80,11 @@ const AdminLogin = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">የይለፍ ቃል</Label>
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="የይለፍ ቃልዎን ያስገቡ"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -95,10 +95,10 @@ const AdminLogin = () => {
                   className="w-full bg-dataBlue hover:bg-dataBlue-dark"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
+                  {isLoading ? 'በመግባት ላይ...' : 'ግባ'}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground mt-2">
-                  <p>Contact system administrator for access</p>
+                  <p>ለእርዳታ የሥርዓት አስተዳዳሪውን ያግኙ</p>
                 </div>
               </form>
             </CardContent>

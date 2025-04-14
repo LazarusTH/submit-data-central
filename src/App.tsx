@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 import Index from "./pages/Index";
+import Forms from "./pages/Forms";
 import AbetutaForm from "./pages/AbetutaForm";
 import QretaForm from "./pages/QretaForm";
 import AbalatMzgebaForm from "./pages/AbalatMzgebaForm";
@@ -32,6 +33,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/forms" element={<Forms />} />
             <Route path="/abetuta-form" element={<AbetutaForm />} />
             <Route path="/qreta-form" element={<QretaForm />} />
             <Route path="/abalat-mzgeba-form" element={<AbalatMzgebaForm />} />
