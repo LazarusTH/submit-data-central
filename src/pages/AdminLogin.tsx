@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { PageLayout } from '@/components/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -57,7 +57,7 @@ const AdminLogin = () => {
               </div>
               <CardTitle className="text-2xl">Admin Login</CardTitle>
               <CardDescription>
-                Enter your credentials to access the admin dashboard
+                Enter admin credentials to access the dashboard
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -98,7 +98,7 @@ const AdminLogin = () => {
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground mt-2">
-                  <p>Create an account with <Link to="/admin/register" className="text-dataBlue hover:underline">admin@datacentralapp.com</Link> for admin access</p>
+                  <p>Contact system administrator for access</p>
                 </div>
               </form>
             </CardContent>
