@@ -20,6 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [authChecked, setAuthChecked] = useState<boolean>(false);
 
   useEffect(() => {
     // Set up auth state listener
@@ -30,11 +31,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         
         // Check admin status if user is logged in
         if (newSession?.user) {
+          // Use setTimeout to avoid potential deadlock
           setTimeout(() => {
             checkAdminStatus();
           }, 0);
         } else {
           setIsAdmin(false);
+          setAuthChecked(true);
         }
       }
     );
@@ -46,8 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (initialSession?.user) {
         checkAdminStatus();
+      } else {
+        setAuthChecked(true);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -61,6 +66,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error checking admin status:', error);
       setIsAdmin(false);
+    } finally {
+      setAuthChecked(true);
+      setIsLoading(false);
     }
   };
 
@@ -105,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout 
       }}
     >
-      {children}
+      {!isLoading && authChecked ? children : null}
     </AuthContext.Provider>
   );
 }
