@@ -14,6 +14,7 @@ import ReportForm from "./pages/ReportForm";
 import Admin from "./pages/Admin";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import WomensWing from "./pages/WomensWing";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/report-form" element={<ReportForm />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/womens-wing" element={<WomensWing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
