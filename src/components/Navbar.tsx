@@ -36,11 +36,6 @@ export function Navbar() {
               <span>ቅጾች</span>
             </Link>
           </Button>
-          <Button asChild variant="ghost">
-            <Link to="/womens-wing" className="flex items-center gap-1">
-              <span>ሴቶች ክንፍ</span>
-            </Link>
-          </Button>
           <Button asChild variant="outline" className="border-dataBlue text-dataBlue hover:bg-dataBlue/5">
             <Link to="/admin" className="flex items-center gap-1">
               <span>አስተዳዳሪ</span>
@@ -61,11 +56,6 @@ export function Navbar() {
             <Button asChild variant="ghost" className="justify-start">
               <Link to="/forms" onClick={() => setIsMenuOpen(false)}>
                 ቅጾች
-              </Link>
-            </Button>
-            <Button asChild variant="ghost" className="justify-start">
-              <Link to="/womens-wing" onClick={() => setIsMenuOpen(false)}>
-                ሴቶች ክንፍ
               </Link>
             </Button>
             <Button asChild variant="ghost" className="justify-start">
