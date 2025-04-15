@@ -48,8 +48,18 @@ const staggerContainer = {
   }
 };
 
+// Define a type for the isVisible state
+interface VisibilityState {
+  about?: boolean;
+  principles?: boolean;
+  goals?: boolean;
+  programs?: boolean;
+  achievements?: boolean;
+  [key: string]: boolean | undefined;
+}
+
 const WomensWing = () => {
-  const [isVisible, setIsVisible] = useState({});
+  const [isVisible, setIsVisible] = useState<VisibilityState>({});
   const heroRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
 
@@ -646,7 +656,8 @@ const WomensWing = () => {
       </section>
 
       {/* CSS for confetti animation */}
-      <style jsx="true">{`
+      <style>
+        {`
         @keyframes fall {
           0% { transform: translateY(-10px) rotate(0deg); }
           100% { transform: translateY(100vh) rotate(360deg); }
@@ -656,9 +667,11 @@ const WomensWing = () => {
           50% { transform: rotate(5deg); }
           100% { transform: rotate(0deg); }
         }
-      `}</style>
+        `}
+      </style>
     </PageLayout>
   );
 };
 
 export default WomensWing;
+
