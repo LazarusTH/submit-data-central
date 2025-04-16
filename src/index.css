@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,6 +50,12 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Custom colors */
+    --dataBlue: 215 71% 23%;
+    --dataBlue-dark: 215 71% 18%;
+    --dataGold: 45 100% 60%;
+    --dataGold-light: 45 100% 70%;
   }
 
   .dark {
@@ -97,5 +104,76 @@
 
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .bg-dataBlue {
+    @apply bg-[#1a365d];
+  }
+  
+  .bg-dataBlue-dark {
+    @apply bg-[#12243f];
+  }
+  
+  .bg-dataGold {
+    @apply bg-[#f6ad55];
+  }
+  
+  .bg-dataGold-light {
+    @apply bg-[#ffc87c];
+  }
+  
+  .text-dataBlue {
+    @apply text-[#1a365d];
+  }
+  
+  .text-dataGold {
+    @apply text-[#f6ad55];
+  }
+  
+  .border-dataBlue {
+    @apply border-[#1a365d];
+  }
+  
+  .border-dataGold {
+    @apply border-[#f6ad55];
+  }
+  
+  .hover\:bg-dataBlue:hover {
+    @apply hover:bg-[#1a365d];
+  }
+  
+  .hover\:bg-dataBlue-light:hover {
+    @apply hover:bg-[#234677];
+  }
+  
+  .hover\:bg-dataGold:hover {
+    @apply hover:bg-[#f6ad55];
+  }
+  
+  .hover\:bg-dataGold-light:hover {
+    @apply hover:bg-[#ffc87c];
+  }
+  
+  .from-dataBlue {
+    @apply from-[#1a365d];
+  }
+  
+  .to-dataBlue-dark {
+    @apply to-[#12243f];
+  }
+  
+  .from-dataGold {
+    @apply from-[#f6ad55];
+  }
+  
+  .to-dataGold-light {
+    @apply to-[#ffc87c];
   }
 }
